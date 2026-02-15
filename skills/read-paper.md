@@ -1,6 +1,7 @@
 ---
+name: read-paper
 description: Read and understand a research paper using layered multi-pass reading
-allowed-tools: Read, Edit, Write, Glob, Grep, Task, Bash(git status:*), Bash(git add:*), Bash(git commit:*)
+allowed-tools: Read, Edit, Write, Glob, Grep, Task
 ---
 
 Read a research paper using a 4-step layered workflow. This command runs end-to-end without confirmation checkpoints.
@@ -17,10 +18,9 @@ A paper is not a textbook. It's a compressed argument. Your job is to decompress
 
 **First action before any other work:** Request all permissions upfront so the rest runs uninterrupted.
 
-1. Create `docs/papers/` directory (triggers Write permission)
+1. Create `docs/<domain_name>/<paper_name>/` directory (triggers Write permission)
 2. Run a Grep search on the codebase if one exists (triggers Grep permission)
 3. Launch a quick Task to confirm Task tool access (triggers Task permission)
-4. Run `git status` to confirm git access (triggers Bash permission)
 
 Get all approvals immediately, then proceed with the workflow.
 
@@ -28,7 +28,16 @@ Get all approvals immediately, then proceed with the workflow.
 
 The user provides a PDF of the paper. Read the full PDF before beginning any step.
 
-Generate a slug from the paper title for file naming (e.g., "Attention Is All You Need" → `attention-is-all-you-need`). All output files use this slug as a prefix or directory name.
+Derive output path components from the PDF path:
+
+- `domain_name`: Use the immediate parent directory name of the PDF file.
+- `paper_name`: Use a slug generated from the PDF filename stem (without `.pdf`), normalized to lowercase kebab-case.
+
+Example:
+- Input PDF: `sources/syn/novelrewrite-node-level-parallel-aig-rewriting.pdf`
+- `domain_name`: `syn`
+- `paper_name`: `novelrewrite-node-level-parallel-aig-rewriting`
+- Output base directory: `docs/syn/novelrewrite-node-level-parallel-aig-rewriting/`
 
 ## Invocation
 
@@ -47,6 +56,13 @@ Act as a reading partner combining three perspectives:
 **Skeptical reviewer** — You read with the mindset of a careful peer reviewer. You ask: Is this claim actually supported by the evidence? Are there confounders? Would this result hold under different conditions? You separate what the paper *shows* from what it *claims*.
 
 **On voice:** Write in the style of a knowledgeable colleague explaining the paper over coffee — precise but not stiff, willing to say "this part is confusing" or "I think they're overselling this." Use the Recurse Center ethos: work at the edge of your understanding, treat reading as craft worth getting dramatically better at, and approach the material with genuine curiosity.
+
+## Language Policy
+
+- Write all generated notes in Simplified Chinese by default.
+- Keep original English for proper nouns, uncommon terms, fixed expressions, algorithm names, dataset names, variable names, and terminology where translation may reduce precision.
+- On first appearance of an important term, prefer `中文（English）` format.
+- Keep quoted text from the paper in original English and add Chinese explanation if needed.
 
 ## Workflow
 
@@ -83,9 +99,7 @@ Produce a triage card:
 [Explicit recommendation with reasoning: "Deep read because..." or "Skip because..."]
 ```
 
-Output: `docs/papers/<slug>/00-triage.md`
-
-**Commit:** `papers: triage <slug> (step 1/4)`
+Output: `docs/<domain_name>/<paper_name>/00-triage.md`
 
 **If recommendation is "Skip":** Stop here unless user overrides. The remaining steps only run for papers worth the investment.
 
@@ -133,9 +147,7 @@ Produce a structure map:
 - [What I'm confused about and hope will be clarified]
 ```
 
-Output: `docs/papers/<slug>/01-structure.md`
-
-**Commit:** `papers: structure map <slug> (step 2/4)`
+Output: `docs/<domain_name>/<paper_name>/01-structure.md`
 
 ---
 
@@ -177,11 +189,9 @@ For experimental results:
 - How large are the improvements? Are they within noise?
 - What experiments are *missing* that would strengthen the claims?
 
-Output: `docs/papers/<slug>/02-deep-read.md`
+Output: `docs/<domain_name>/<paper_name>/02-deep-read.md`
 
 **Reflect:** Can I now explain the core contribution to someone in 2 minutes? If not, what's still unclear?
-
-**Commit:** `papers: deep read <slug> (step 3/4)`
 
 ---
 
@@ -230,11 +240,9 @@ Output: `docs/papers/<slug>/02-deep-read.md`
 [Any new terms learned from this paper]
 ```
 
-Output: `docs/papers/<slug>/03-synthesis.md`
+Output: `docs/<domain_name>/<paper_name>/03-synthesis.md`
 
 **Reflect:** If I read only this synthesis note in 6 months, would I recover the essential understanding? Is anything missing?
-
-**Commit:** `papers: synthesis <slug> (step 4/4)`
 
 ---
 
@@ -260,19 +268,20 @@ The goal is active reading, not passive consumption. If the user is just saying 
 ## File Structure
 
 ```
-docs/papers/
-└── <paper-slug>/
-    ├── 00-triage.md           # Step 1: Worth reading?
-    ├── 01-structure.md        # Step 2: How the argument is built
-    ├── 02-deep-read.md        # Step 3: Core contribution in depth
-    └── 03-synthesis.md        # Step 4: Permanent reusable note
+docs/
+└── <domain_name>/
+    └── <paper_name>/
+        ├── 00-triage.md           # Step 1: Worth reading?
+        ├── 01-structure.md        # Step 2: How the argument is built
+        ├── 02-deep-read.md        # Step 3: Core contribution in depth
+        └── 03-synthesis.md        # Step 4: Permanent reusable note
 ```
 
 ## Cross-Paper Support
 
 Each synthesis note includes a `## Connections` section. When reading a new paper:
 
-1. Check `docs/papers/` for existing notes
+1. Check `docs/<domain_name>/` first, then scan other directories under `docs/` for related notes
 2. If related papers exist, reference them in the Connections section
 3. Update the *older* paper's Connections section to link back
 
@@ -295,8 +304,10 @@ This checklist verifies *understanding*, not just completion. Quality assessment
 ## Rules
 
 - Read the full PDF before beginning Step 1
+- Infer `domain_name` from the PDF's parent directory and `paper_name` from the PDF filename stem
 - Reference earlier layers before proceeding to later steps
 - Use Task tool for background research when context is needed (related work, unfamiliar concepts)
 - Prioritize intuition over formalism — but never at the cost of correctness
 - If something is genuinely unclear in the paper, say so — don't fabricate explanations
 - Push back if the user wants to skip steps that would compromise understanding
+- Default to Simplified Chinese output; keep key technical terms in English when precision is better

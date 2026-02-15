@@ -1,6 +1,7 @@
 ---
+name: review-paper
 description: Critically review paper understanding and reading notes quality
-allowed-tools: Read, Edit, Write, Glob, Grep, Task, Bash(git status:*), Bash(git add:*), Bash(git commit:*)
+allowed-tools: Read, Edit, Write, Glob, Grep, Task
 ---
 
 Review paper reading notes using three sequential passes. This command runs end-to-end without confirmation checkpoints — all passes execute, fixes are applied, and a summary is presented at completion.
@@ -15,10 +16,10 @@ Each pass builds on the previous. Run them in order: comprehension → critique 
 
 **First action before any other work:** Request all permissions upfront so the rest runs uninterrupted.
 
-1. Read a file from `docs/papers/` (confirms notes exist)
-2. Run a Grep search on the papers directory (triggers Grep permission)
-3. Launch a quick Task to confirm Task tool access (triggers Task permission)
-4. Run `git status` to confirm git access (triggers Bash permission)
+1. Read a file from `docs/<domain_name>/<paper_name>` (confirms notes exist)
+2. Read the source pdf from `sources/<domain_name>/<paper_name>.pdf` (confirms source exists)
+3. Run a Grep search on the papers directory (triggers Grep permission)
+4. Launch a quick Task to confirm Task tool access (triggers Task permission)
 
 Get all approvals immediately, then proceed with the workflow.
 
@@ -71,8 +72,6 @@ If `docs/papers/` is empty or doesn't exist, stop and inform the user — nothin
 
 **Reflect before proceeding:** After fixing comprehension issues, are there claims in the notes that should now be questioned? Note areas for critique pass.
 
-**Commit:** `papers: comprehension audit <slug> (pass 1/3)`
-
 ---
 
 ### Pass 2: Critical Assessment
@@ -110,8 +109,6 @@ If `docs/papers/` is empty or doesn't exist, stop and inform the user — nothin
 6. Apply fixes — strengthen critique sections, add missing questions, note unsupported claims
 
 **Reflect before proceeding:** Has the critical assessment changed the overall evaluation of the paper? Should the TL;DR or "Core Idea" be revised?
-
-**Commit:** `papers: critical assessment <slug> (pass 2/3)`
 
 ---
 
@@ -152,8 +149,6 @@ If `docs/papers/` is empty or doesn't exist, stop and inform the user — nothin
 4. Update related papers' Connections sections to cross-reference
 5. Check if the Questions & Follow-ups suggest a clear next-reading path
 6. Apply fixes — enrich connections, add reading-path suggestions, improve long-term note quality
-
-**Commit:** `papers: integration review <slug> (pass 3/3)`
 
 ---
 

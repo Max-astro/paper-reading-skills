@@ -1,7 +1,6 @@
 ---
 name: read-paper
 description: Read and understand a research paper using layered multi-pass reading
-allowed-tools: Read, Edit, Write, Glob, Grep, Task
 ---
 
 Read a research paper using a 4-step layered workflow. This command runs end-to-end without confirmation checkpoints.

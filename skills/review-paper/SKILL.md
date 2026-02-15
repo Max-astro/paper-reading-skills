@@ -1,7 +1,6 @@
 ---
 name: review-paper
 description: Critically review paper understanding and reading notes quality
-allowed-tools: Read, Edit, Write, Glob, Grep, Task
 ---
 
 Review paper reading notes using three sequential passes. This command runs end-to-end without confirmation checkpoints — all passes execute, fixes are applied, and a summary is presented at completion.

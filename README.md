@@ -10,7 +10,7 @@
 
 ## Prerequisite
 
-- 需预先安装 Anthropic 官方提供的 `pdf` skill（`read-paper` / `review-paper` 依赖该能力读取 PDF）
+- 需预先安装 Anthropic 官方提供的 [`pdf`](https://github.com/anthropics/skills/tree/main/skills/pdf) skill（`read-paper` / `review-paper` 依赖该能力读取 PDF）
 
 ## Usage
 1. 将论文放到 `sources/<domain>/`

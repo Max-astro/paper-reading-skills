@@ -16,8 +16,8 @@ Each pass builds on the previous. Run them in order: comprehension → critique 
 **First action before any other work:** Request all permissions upfront so the rest runs uninterrupted.
 
 1. Read a file from `docs/<domain_name>/<paper_name>` (confirms notes exist)
-2. Read the source pdf from `sources/<domain_name>/<paper_name>.pdf` (confirms source exists)
-3. Run a Grep search on the papers directory (triggers Grep permission)
+2. Read the source PDF file using the `pdf` skill from `sources/<domain_name>/<paper_name>.pdf` (confirms both the source and the `pdf` skill exist)
+3. Run a Grep search on the papers directory
 4. Launch a quick Task to confirm Task tool access (triggers Task permission)
 
 Get all approvals immediately, then proceed with the workflow.

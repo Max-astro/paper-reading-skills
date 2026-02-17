@@ -25,7 +25,7 @@ Get all approvals immediately, then proceed with the workflow.
 
 ## Input
 
-The user provides a PDF of the paper. Read the full PDF before beginning any step.
+The user provides a PDF of the paper. Read the full PDF by using the `pdf` skill (if the skill doesn't exist, report an error, then stop) before beginning any step.
 
 Derive output path components from the PDF path:
 
@@ -107,6 +107,7 @@ Output: `docs/<domain_name>/<paper_name>/00-triage.md`
 ### Step 2: Structure Map
 
 **Goal:** Understand the paper's architecture — how the argument is built, before engaging with details.
+In this step, also produce a section-by-section introduction block (TL;DR style) at the **begin** of `01-structure.md` so each section's core idea is clear before deep reading.
 
 Read the full paper at a structural level:
 
@@ -119,6 +120,17 @@ Produce a structure map:
 
 ```markdown
 # Structure Map: [Paper Title]
+
+## Section-by-Section Introductions (TL;DR)
+<!-- This must be the first section in 01-structure.md -->
+<!-- Keep order identical to the paper's table of contents / headings -->
+<!-- Use heading levels to reflect hierarchy -->
+
+### [Section label + title exactly as in paper, e.g., "III Method" or "3 Method"]
+[Core idea (TL;DR), 2-3 sentences, explain to a smart outsider; avoid jargon-first writing]
+[Technical nucleus, Claim + mechanism in 1-3 sentences]
+
+If there are subsections, generate a TL;DR for them as well and keep the hierarchical structure.
 
 ## Argument Flow
 [A numbered sequence showing how the paper builds its argument]
